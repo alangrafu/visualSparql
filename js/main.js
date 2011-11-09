@@ -161,7 +161,7 @@ var force;
 function restart(){
   q = document.getElementById("query").value;
   d3.select("#query").text(q);
-  var sp = new SparqlParser();
+  var sp = new SparqlApi();
   nodes = [];
   links = [];
   sp.init(q);
