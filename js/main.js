@@ -1,11 +1,10 @@
 
-var w = 860,
+var w = 700,
     h = 400
 
-var vis = d3.select("body").append("svg:svg")
+var vis = d3.select("#chart").append("svg:svg")
     .attr("width", w)
-    .attr("height", h).style("float", "left");
-
+    .attr("height", h);
 
 var files = d3.select("body").append("div").style("width", 100).style("height", 100).style("border-style", "solid").style("border-width", "1px").style("float", "left");
 
@@ -95,7 +94,8 @@ var force;
       .attr("y", "-8px")
       .attr("width", "16px")
       .attr("height", "16px")
-      .style("fill", "#66f");
+      .style("fill", "#CFEFCF")
+      .style("stroke", "#000");
       
      
       
