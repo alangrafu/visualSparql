@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="js/d3/d3.js"></script>
+<script type="text/javascript" src="js/d3/d3.layout.js"></script>
+<script type="text/javascript" src="js/d3/d3.geom.js"></script>
+<script type="text/javascript" src="js/sparqlParser.js"></script>
+
+<style type="text/css">
+.link { stroke: #ccc; }
+.nodetext { pointer-events: none; font: 10px sans-serif; }
+</style>
+<link href='css/style.css' rel='stylesheet' type='text/css' />
+<title>Visual SPARQL</title>
+</head>
+<body>
+<h1>Visual SPARQL</h1>
+<textarea  cols="40" rows="10" style="float;left" id="query">
+SELECT ?s ?p WHERE
+{
+?s ?p ?o.
+ ?o a foaf:Person .
+}</textarea>
+<button>Redraw</button>
+<script type="text/javascript" src='js/main.js'>
+</script>
+</body>
+</html>
+
+

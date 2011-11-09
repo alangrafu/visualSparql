@@ -1,0 +1,51 @@
+
+{"nodes":[
+{"name":"Instrument", "uri":"Instrument", "open": 0, "r": 10.0, "group": 1}
+,
+{"name":"Magnetometer", "uri":"Magnetometer", "open": 0, "r": 10.0, "instrument": 1}
+,
+{"name":"Ground Based Indices", "uri":"GroundBasedIndices", "open": 0, "r": 10.0, "instrument": 1}
+,
+{"name":"Ground Based Instrument", "uri":"GroundBasedInstrument", "open": 0, "r": 10.0, "instrument": 1}
+,
+{"name":"Telescope", "uri":"Telescope", "open": 0, "r": 10.0, "instrument": 1}
+,
+{"name":"Spectrograph", "uri":"Spectrograph", "open": 0, "r": 10.0, "instrument": 1}
+,
+{"name":"Sounder", "uri":"Sounder", "open": 0, "r": 18.0, "instrument": 1}
+,
+{"name":"Radar", "uri":"Radar", "open": 0, "r": 25.0, "instrument": 1}
+,
+{"name":"Model", "uri":"Model", "open": 0, "r": 10.0, "instrument": 1}
+,
+{"name":"Space Craft", "uri":"SpaceCraft", "open": 0, "r": 10.0, "instrument": 1}
+,
+{"name":"Filter Instrument", "uri":"FilterInstrument", "open": 0, "r": 19.0, "instrument": 1}
+,
+{"name":"Optical Instrument", "uri":"OpticalInstrument", "open": 0, "r": 24.0, "instrument": 1}
+],"links":[
+{"source": 0, "target": 0, "value": 10}
+,
+{"source": 0, "target": 1, "value": 10}
+,
+{"source": 0, "target": 2, "value": 10}
+,
+{"source": 0, "target": 3, "value": 10}
+,
+{"source": 0, "target": 4, "value": 10}
+,
+{"source": 0, "target": 5, "value": 10}
+,
+{"source": 0, "target": 6, "value": 10}
+,
+{"source": 0, "target": 7, "value": 10}
+,
+{"source": 0, "target": 8, "value": 10}
+,
+{"source": 0, "target": 9, "value": 10}
+,
+{"source": 0, "target": 10, "value": 10}
+,
+{"source": 0, "target": 11, "value": 10}
+]}
+
