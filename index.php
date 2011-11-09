@@ -1,3 +1,16 @@
+<?
+$query = "SELECT ?s ?p WHERE
+{
+?s ?p ?o.
+?o a foaf:Person .
+}";
+if(isset($_GET['query'])){
+	$query = $_GET['query'];
+}elseif(isset($_GET['url'])){
+  $query = file_get_contents($_GET['url']);
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,11 +31,8 @@
 <h1>Visual SPARQL</h1>
 <div style="float: left;border-width: 1px; border-style: solid;" class='gallery' id='chart'></div>
 <textarea  cols="40" rows="10" style="float;left" id="query">
-SELECT ?s ?p WHERE
-{
-?s ?p ?o.
- ?o a foaf:Person .
-}</textarea>
+<?= $query ?>
+</textarea>
 <br/>
 <button>Redraw</button>
 <script type="text/javascript" src='js/main.js'>
