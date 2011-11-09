@@ -1,8 +1,10 @@
 <?
 $query = "SELECT ?s ?p WHERE
 {
-?s ?p ?o.
-?o a foaf:Person .
+?s ?p ?o;
+ a foaf:Person ;
+ rdfs:label 'asdasdasd';
+ foaf:knows <http://alvaro.graves.cl> 
 }";
 if(isset($_GET['query'])){
 	$query = $_GET['query'];
@@ -18,6 +20,7 @@ if(isset($_GET['query'])){
 <script type="text/javascript" src="js/d3/d3.layout.js"></script>
 <script type="text/javascript" src="js/d3/d3.geom.js"></script>
 <script type="text/javascript" src="js/SparqlParser.js"></script>
+<script type="text/javascript" src="js/SparqlApi.js"></script>
 
 <style type="text/css">
 .link { stroke: #ccc; font-size: 12px; font-family: sans-serif; color: red;}
