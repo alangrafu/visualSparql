@@ -48,24 +48,37 @@ var force;
       
       var link = vis.selectAll("g.link")
       .data(links)
-      .enter().append("svg:g").attr("class", "link")
-      .attr("dx", "80px")
-      .attr("dy", "80px")
+      .enter()
+      .append("svg:g").attr("class", "link")
       .call(force.drag);
-
       link.append("svg:line")
+      .attr("class", "link")
+      .attr("x1", function(d){return d.x1})
+      .attr("y1", function(d){return d.y1})
+      .attr("x2", function(d){return d.x1})
+      .attr("y2", function(d){return d.y2});
+      
+      link.append("svg:text")
+      .attr("class", "link")
+      .attr("x", function(d) { return d.source.x; })
+      .attr("y", function(d) { return d.source.y; })
+      .text(function(d){return d.name;});
+      
+/*
+        var link = vis.selectAll("g.link")
+      .data(links)
+      .enter().append("svg:line")
       .attr("class", "link")
       .attr("x1", function(d) { return d.source.x; })
       .attr("y1", function(d) { return d.source.y; })
       .attr("x2", function(d) { return d.target.x; })
-      .attr("y2", function(d) { return d.target.y; });
-      
+      .attr("y2", function(d) { return d.target.y; });*/
+  /*    
       link.append("svg:text")
-      .attr("class", "nodetext")
       .attr("dx", 12)
       .attr("dy", ".35em")
       .text("texst");
-      
+    */  
       
       var node = vis.selectAll("g.node")
       .data(nodes)
@@ -93,10 +106,12 @@ var force;
       .text(function(d) { return d.name });
       
       force.on("tick", function() {
-      	  link.attr("x1", function(d) { return d.source.x; })
+      	  link.selectAll("line.link").attr("x1", function(d) { return d.source.x; })
           .attr("y1", function(d) { return d.source.y; })
           .attr("x2", function(d) { return d.target.x; })
           .attr("y2", function(d) { return d.target.y; });
+          link.selectAll("text.link").attr("x", function(d) { return (d.source.x+d.target.x)/2; })
+          .attr("y", function(d) { return (d.source.y+d.target.y)/2; })
           
           node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; 
           });

@@ -30,18 +30,23 @@ SparqlParser = function () {
   	  var pat = query.match(/\{(.*)\}/);
   	  var patterns = pat[1].split(".");
   	  console.log(patterns);
-  	  patterns.filter(function(i){return i.length>0}).forEach(function(item){
+  	  patterns.filter(function(i){return i.length>0}).forEach(function(i){
   	  	  var elements = [];
-  	  	  item.split(/\s+/).forEach(function(i){
-  	  	  	  if(i.length > 0){
-  	  	  	  	elements.push(i);
-  	  	  	  }
+  	  	  i.split(/;/).forEach(function(item){
+  	  	  	  item.split(/\s+/).forEach(function(t){
+  	  	  	  	  if(t.length > 0){
+  	  	  	  	  	elements.push(t);
+  	  	  	  	  }
+  	  	  	  });
+  	  	  	  links.push({
+  	  	  	  	  source: impl.createNode(elements[0]),
+  	  	  	  	  target: impl.createNode(elements[2]),
+  	  	  	  	  name: elements[1],
+  	  	  	  	  value: 10
+  	  	  	  });
+  	  	  	  elements.splice(1, elements.length-1);
   	  	  });
-  	  	  links.push({
-  	  	  	  source: impl.createNode(elements[0]),
-  	  	  	  target: impl.createNode(elements[2]),
-  	  	  	  value: 10
-  	  	  });  	  	  	  
+  	  	  
   	  });
   	},
   	getQuery: function () {
