@@ -25,6 +25,18 @@ SparqlApi = function () {
   	getLinks: function(){
   	  return links;
   	},
+  	getCurie: function(uri){
+  	  for(k in ns){
+  	  	var v = ns[k];
+  	  	var re = new RegExp("^"+ns[k],"g");
+  	  	//console.log(v+" es parte de "+uri);
+  	  	if(uri.match(re)){
+  	  		arr = uri.replace(re, "");
+  	  		return k+":"+arr;
+  	  	}
+  	  }
+  	  return uri;
+  	},
   	getPatterns: function () {
   	  d3.select("#msg").text("");
   	  try{
@@ -42,8 +54,12 @@ SparqlApi = function () {
   	  	predicate = (aux[i].predicate.value != null)? aux[i].predicate.value : aux[i].predicate.prefix+":"+aux[i].predicate.suffix;
   	  	object = (aux[i].object.value != null)? aux[i].object.value : aux[i].object.prefix+":"+aux[i].object.suffix;
   	  	if(aux[i].object.token == "literal"){object = '"'+object+'"';}
+  	  	subject = impl.getCurie(aux[i].subject.value);
+  	  	predicate = impl.getCurie(predicate);
+  	  	console.log(predicate);
+  	  	object = impl.getCurie(object);
   	  	links.push({
-  	  		source: impl.createNode(aux[i].subject.value),
+  	  		source: impl.createNode(subject),
   	  	  	  	  target: impl.createNode(object),
   	  	  	  	  name: predicate,
   	  	  	  	  value: 10
