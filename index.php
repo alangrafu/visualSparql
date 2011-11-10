@@ -21,6 +21,7 @@ if(isset($_GET['query'])){
 <script type="text/javascript" src="js/d3/d3.geom.js"></script>
 <script type="text/javascript" src="js/SparqlParser.js"></script>
 <script type="text/javascript" src="js/SparqlApi.js"></script>
+<script type="text/javascript" src="js/namespace.js"></script>
 
 <style type="text/css">
 .link { stroke: #ccc; font-size: 12px; font-family: sans-serif; color: red;}
@@ -37,7 +38,7 @@ if(isset($_GET['query'])){
 <?= $query ?>
 </textarea>
 <br/>
-<button>Redraw</button>
+<button>Redraw</button><div id="msg"></div>
 <script type="text/javascript" src='js/main.js'>
 </script>
 </body>

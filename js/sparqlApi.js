@@ -26,7 +26,16 @@ SparqlApi = function () {
   	  return links;
   	},
   	getPatterns: function () {
-  	  parsed = sparqlParser.parse(query);
+  	  d3.select("#msg").text("");
+  	  try{
+  	  	parsed = sparqlParser.parse(query);
+  	  }catch(err)
+  	  {
+  	  	d3.select("#msg").style("color", "red").text("Your query has syntactic error(s)");
+  	  	nodes = [];
+  	  	links = [];
+  	  	return;
+  	  }
   	  aux = parsed.units[0].pattern.patterns[0].triplesContext;
   	  console.log(parsed.units[0].pattern.patterns);
   	  for(var i=0; i< aux.length; i++){
