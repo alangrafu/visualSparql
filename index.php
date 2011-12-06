@@ -16,12 +16,13 @@ if(isset($_GET['query'])){
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/d3/d3.js"></script>
 <script type="text/javascript" src="js/d3/d3.layout.js"></script>
 <script type="text/javascript" src="js/d3/d3.geom.js"></script>
+<script type="text/javascript" src="js/namespace.js"></script>
 <script type="text/javascript" src="js/SparqlParser.js"></script>
 <script type="text/javascript" src="js/SparqlApi.js"></script>
-<script type="text/javascript" src="js/namespace.js"></script>
 
 <style type="text/css">
 .link { stroke: #ccc; font-size: 12px; font-family: sans-serif; color: red;}
@@ -29,6 +30,7 @@ if(isset($_GET['query'])){
 .main{border: 1px; border-color: black}
 </style>
 <link href='css/style.css' rel='stylesheet' type='text/css' />
+<link href='css/dialog.css' rel='stylesheet' type='text/css' />
 <title>Visual SPARQL</title>
 </head>
 <body>
@@ -38,9 +40,28 @@ if(isset($_GET['query'])){
 <?= $query ?>
 </textarea>
 <br/>
-<button>Redraw</button><div id="msg"></div>
-<script type="text/javascript" src='js/main.js'>
-</script>
+<button id="redraw">Redraw</button><div id="msg"></div>
+<button id="newnode">New node</button>
+
+<div id="dialog-overlay"></div>
+<div id="dialog-box">
+    <div class="dialog-content">
+        <div id="dialog-message"></div>
+        <a href="#" class="button">Close</a>
+    </div>
+</div>
+<div id="panel" style="display:none">
+  <input type="text" id="nodename" value="ASDASD"/><br/>
+  <button id="submitNode">Add</button>
+</div>
+<div id="predDialog" style="display:none">
+  <input type="text" id="predname" value="foaf:based_near"/><br/>
+  <button id="submitPred">Add</button>
+</div>
+
+<script type="text/javascript" src='js/main.js'></script>
+<script type="text/javascript" src="js/dialog.js"></script>
+<script type="text/javascript" src="js/dragdrop.js"></script>
 </body>
 </html>
 

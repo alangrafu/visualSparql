@@ -19,7 +19,12 @@ SparqlApi = function () {
   	  nodes.push({name: n});
   	  return c;
   	},
-  	getNodes: function(){
+    createLink: function(s, t, n){
+      var c = 0;      
+      links.push({source: impl.createNode(s), target: impl.createNode(t), name: n, value: 10});
+      return links.length;
+    },
+    getNodes: function(){
   	  return nodes;
   	},
   	getLinks: function(){
@@ -49,10 +54,33 @@ SparqlApi = function () {
   	  	return;
   	  }
   	  aux = parsed.units[0].pattern.patterns[0].triplesContext;
-  	  console.log(parsed.units[0].pattern.patterns);
   	  for(var i=0; i< aux.length; i++){
   	  	predicate = (aux[i].predicate.value != null)? aux[i].predicate.value : aux[i].predicate.prefix+":"+aux[i].predicate.suffix;
   	  	object = (aux[i].object.value != null)? aux[i].object.value : aux[i].object.prefix+":"+aux[i].object.suffix;
+  	  	subject = (aux[i].subject.value != null)? aux[i].subject.value : aux[i].subject.prefix+":"+aux[i].subject.suffix;
+  	  	
+  	  	//uris and curies
+  	  	if(aux[i].object.token == "uri"){
+  	  	  object = ns.uri2curie(object);
+  	  	}
+  	  	if(aux[i].predicate.token == "uri"){
+  	  	  predicate = ns.uri2curie(predicate);
+  	  	}
+  	  	if(aux[i].subject.token == "uri"){
+  	  	  subject = ns.uri2curie(subject);
+  	  	}
+  	  	
+  	  	//vars
+  	  	if(aux[i].object.token == "var"){
+  	  	  object = "?"+object;
+  	  	}
+  	  	if(aux[i].predicate.token == "var"){
+  	  	  predicate = "?"+predicate;
+  	  	}
+  	  	if(aux[i].subject.token == "var"){
+  	  	  subject = "?"+subject;
+  	  	}  	  
+  	  	
   	  	if(aux[i].object.token == "literal"){object = '"'+object+'"';}
   	  	subject = impl.getCurie(aux[i].subject.value);
   	  	predicate = impl.getCurie(predicate);
@@ -69,6 +97,7 @@ SparqlApi = function () {
   	getQuery: function () {
   	  return query;
   	},
+  	
   }
 }
 
