@@ -2,6 +2,8 @@
 var w = 700,
 h = 400;
 var normalColor = "#CFEFCF";
+var varColor    = "#CFCFEF";
+var selectColor = "red";
 var sp = new SparqlApi();
 
 var ns = new NS();
@@ -47,6 +49,7 @@ function init(json){
   .attr("y", function(d) { return d.source.y; })
   .text(function(d){return d.name;});
 
+
   var node = vis.selectAll("g.node")
   .data(nodes)
   .enter().append("svg:g")
@@ -54,7 +57,6 @@ function init(json){
   .attr("dx", "80px")
   .attr("dy", "80px")
   .call(force.drag);
-
   node.append("svg:circle")
   .attr("class", "node")
   .attr("r", 10)
@@ -63,7 +65,7 @@ function init(json){
   .attr("width", "16px")
   .attr("height", "16px")
   .attr("id", function(d){return d.name})
-  .style("fill", normalColor)
+  .style("fill", function(d){if(projections.indexOf(d.name)<0){return normalColor}else{return varColor}})
   .style("stroke", "#000");
 
 
@@ -96,13 +98,9 @@ function init(json){
 
 });
 
-
-
-
 }
 
 function restart() {
-  console.log(links);
   vis.selectAll("line.link")
   .data(links)
   .enter().insert("svg:line", "line.link")
@@ -121,19 +119,22 @@ function restart() {
   .attr("r", 5)
   .call(force.drag);
 
-  force.start();
+  force.charge(-2000).start();
 }
 
 var  q = document.getElementById("query").value;
 
 sp = new SparqlApi();
 sp.init(q);
+var projections = sp.getProjection();
+  console.log(projections);
 sp.getPatterns();
 var json = {
   nodes: sp.getNodes(),
   links: sp.getLinks()
 };
 init(json);
+force.stop();
 restart();
 
 
@@ -142,6 +143,7 @@ function redrawGraph(){
   links = [];
   vis.selectAll("g").remove();
   vis.selectAll("line").remove();
+  vis.empty();
   var json = {
     nodes: sp.getNodes(),
     links: sp.getLinks()
@@ -150,7 +152,11 @@ function redrawGraph(){
   restart();
 }
 d3.select("#redraw").on("click", function(){
-	redrawGraph();
+  q = document.getElementById("query").value;
+  sp.init(q);
+  sp.getPatterns();
+  projections = sp.getProjection();
+  redrawGraph();
 });
 
 

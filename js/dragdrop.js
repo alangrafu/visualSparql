@@ -1,17 +1,22 @@
 
 var creatingLink = false;
 var sourceNode, targetNode = undefined;
-
+var sourceCircle, targetCircle = undefined;
 function addEventToNodes(){
     d3.selectAll("circle.node").on("dblclick", function(d){    
-        var thisNode = d3.select(this);
-        thisNode.style("fill", "red");
         if(creatingLink == false){
+            sourceCircle = d3.select(this);
+            sourceCircle.style("fill", selectColor);
             creatingLink = true;
-            sourceNode= thisNode.attr("id");
+            sourceNode= sourceCircle.attr("id");
         }else{
             $("#predDialog").css("display", "inline");
-            targetNode = thisNode.attr("id");
+            if(targetCircle != undefined){
+                targetCircle.style("fill", normalColor);
+            }
+            targetCircle = d3.select(this);
+            targetCircle.style("fill", selectColor);
+            targetNode = targetCircle.attr("id");
         }
     })
 }
@@ -21,5 +26,6 @@ $("#submitPred").on("click", function(){
     creatingLink = false;
     $("#predDialog").css("display", "none");
     var addedLink = sp.createLink(sourceNode, targetNode, $("#predname").val());    
-    redrawGraph();
+    targetCircle, sourceCircle = undefined;
+    redrawGraph(); 
 });

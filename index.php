@@ -25,7 +25,7 @@ if(isset($_GET['query'])){
 <script type="text/javascript" src="js/SparqlApi.js"></script>
 
 <style type="text/css">
-.link { stroke: #ccc; font-size: 12px; font-family: sans-serif; color: red;}
+.link { stroke: #000; font-size: 11px; font-family: sans-serif; }
 .nodetext { pointer-events: none; font-size: 11px; font-family: sans-serif; }
 .main{border: 1px; border-color: black}
 </style>
