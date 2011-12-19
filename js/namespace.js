@@ -697,6 +697,9 @@ NS = function(){
   	  	}
   	  }
   	  return u;
+  	},
+  	get: function(p){
+  	  return ns[p];
   	}
   }
 }
