@@ -1,10 +1,13 @@
 <?
-$query = "SELECT ?s ?p WHERE
+$query = "PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT ?s ?p WHERE
 {
 ?s ?p ?o;
- a foaf:Person ;
- rdfs:label 'asdasdasd';
- foaf:knows <http://alvaro.graves.cl> 
+   a foaf:Person ;
+   rdfs:label 'asdasdasd';
+   foaf:knows <http://alvaro.graves.cl> 
 }";
 if(isset($_GET['query'])){
 	$query = $_GET['query'];
@@ -34,13 +37,13 @@ if(isset($_GET['query'])){
 <title>Visual SPARQL</title>
 </head>
 <body>
-<h1>Visual SPARQL</h1>
+<h1>Visual SPARQL</h1><div style="float:right" id="msg"></div>
 <div style="float: left;border-width: 1px; border-style: solid;" class='gallery' id='chart'></div>
-<textarea  cols="40" rows="10" style="float;left" id="query">
+<textarea  cols="60" rows="20" style="float;left" id="query">
 <?= $query ?>
 </textarea>
 <br/>
-<button id="redraw">Redraw</button><div id="msg"></div>
+<button id="redraw">Redraw</button>
 <button id="newnode">New node</button>
 
 <div id="dialog-overlay"></div>

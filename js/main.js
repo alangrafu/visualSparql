@@ -1,9 +1,9 @@
 
 var w = 700,
 h = 400;
-var normalColor = "#CFEFCF";
-var varColor    = "#CFCFEF";
-var selectColor = "red";
+var normalColor = "#cfefcf";
+var varColor    = "#cfcfef";
+var selectColor = "#ff0000";
 var sp = new SparqlApi();
 
 var ns = new NS();
@@ -30,7 +30,7 @@ function init(json){
   .linkDistance(100)
   .size([w, h])
   .start();
-
+  
   var link = vis.selectAll("g.link")
   .data(links)
   .enter()
@@ -42,14 +42,14 @@ function init(json){
   .attr("y1", function(d){if(!isNaN(d.y1)){return d.y1}else{return 20}})
   .attr("x2", function(d){if(!isNaN(d.x2)){return d.x2}else{return 20}})
   .attr("y2", function(d){if(!isNaN(d.y2)){return d.y2}else{return 20}})
-
+  
   link.append("svg:text")
   .attr("class", "link")
   .attr("x", function(d) { return d.source.x; })
   .attr("y", function(d) { return d.source.y; })
   .text(function(d){return d.name;});
-
-
+  
+  
   var node = vis.selectAll("g.node")
   .data(nodes)
   .enter().append("svg:g")
@@ -67,9 +67,9 @@ function init(json){
   .attr("id", function(d){return d.name})
   .style("fill", function(d){if(projections.indexOf(d.name)<0){return normalColor}else{return varColor}})
   .style("stroke", "#000");
-
-
-
+  
+  
+  
   node.append("svg:text")
   .attr("class", "nodetext")
   .attr("dx", 12)
@@ -77,27 +77,27 @@ function init(json){
   .text(function(d) { return d.name });
   var tick=0;
   force.on("tick", function() {
-    tick++;
-    if(tick > 100){          
-      force.stop();
-      force.gravity(0)
-      .charge(0);
-      force.start();
-    }
-    link.selectAll("line.link").attr("x1", function(d) { return d.source.x; })
-    .attr("y1", function(d) { return d.source.y; })
-    .attr("x2", function(d) { return d.target.x; })
-    .attr("y2", function(d) { return d.target.y; });
-    link.selectAll("text.link").attr("x", function(d) { return (d.source.x+d.target.x)/2; })
-    .attr("y", function(d) { return (d.source.y+d.target.y)/2; })
-
-    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; 
+  	  tick++;
+  	  if(tick > 100){          
+  	  	force.stop();
+  	  	force.gravity(0)
+  	  	.charge(0);
+  	  	force.start();
+  	  }
+  	  link.selectAll("line.link").attr("x1", function(d) { return d.source.x; })
+  	  .attr("y1", function(d) { return d.source.y; })
+  	  .attr("x2", function(d) { return d.target.x; })
+  	  .attr("y2", function(d) { return d.target.y; });
+  	  link.selectAll("text.link").attr("x", function(d) { return (d.source.x+d.target.x)/2; })
+  	  .attr("y", function(d) { return (d.source.y+d.target.y)/2; })
+  	  
+  	  node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; 
+  	  });
+  	  
+  	  addEventToNodes();
+  	  
   });
-
-  addEventToNodes();
-
-});
-
+  
 }
 
 function restart() {
@@ -109,7 +109,7 @@ function restart() {
   .attr("y1", function(d) { return d.source.y; })
   .attr("x2", function(d) { return d.target.x; })
   .attr("y2", function(d) { return d.target.y; });
-
+  
   vis.selectAll("circle.node")
   .data(nodes)
   .enter().insert("svg:circle", "circle.node")
@@ -118,7 +118,7 @@ function restart() {
   .attr("cy", function(d) { return d.y; })
   .attr("r", 5)
   .call(force.drag);
-
+  
   force.charge(-2000).start();
 }
 
@@ -127,7 +127,6 @@ var  q = document.getElementById("query").value;
 sp = new SparqlApi();
 sp.init(q);
 var projections = sp.getProjection();
-  console.log(projections);
 sp.getPatterns();
 var json = {
   nodes: sp.getNodes(),
@@ -152,11 +151,29 @@ function redrawGraph(){
   restart();
 }
 d3.select("#redraw").on("click", function(){
-  q = document.getElementById("query").value;
-  sp.init(q);
-  sp.getPatterns();
-  projections = sp.getProjection();
-  redrawGraph();
+	q = document.getElementById("query").value;
+	sp.init(q);
+	sp.getPatterns();
+	projections = sp.getProjection();
+	redrawGraph();
 });
 
 
+//Check that sparql query syntax is OK after typing
+
+var typingTimer;                //timer identifier
+var doneTypingInterval = 800;  //time in ms, 5 second for example
+
+
+$('#query').keyup(function(){
+    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+});
+
+$('#query').keydown(function(){
+    clearTimeout(typingTimer);
+});
+
+function doneTyping () {
+  q = document.getElementById("query").value;
+  sp.init(q);
+}

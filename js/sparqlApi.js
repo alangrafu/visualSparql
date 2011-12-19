@@ -15,10 +15,11 @@ SparqlApi = function () {
       d3.select("#msg").style("color", "red").text("Your query has syntactic error(s)");
       nodes = [];
       links = [];
+      console.log(err);
       return;
     }
   },
-  createNode: function(n){
+  createNode: function(n, t){
    var c = 0;  	  
    for(var i in nodes){
     if(nodes[i].name == n){
@@ -26,12 +27,12 @@ SparqlApi = function () {
     }
     c++;
   }
-  nodes.push({name: n});
+  nodes.push({name: n, type: t});
   return c;
 },
 createLink: function(s, t, n){
   var c = 0;      
-  links.push({source: impl.createNode(s), target: impl.createNode(t), name: n, value: 10});
+  links.push({source: impl.createNode(s), target: impl.createNode(t), name: n, type: "curie", value: 10});
   return links.length;
 },
 getNodes: function(){
@@ -65,9 +66,30 @@ getPatterns: function () {
   links = [];
   var aux = parsed.units[0].pattern.patterns[0].triplesContext;
   for(var i=0; i< aux.length; i++){
-    predicate = (aux[i].predicate.value != null)? aux[i].predicate.value : aux[i].predicate.prefix+":"+aux[i].predicate.suffix;
-    object = (aux[i].object.value != null)? aux[i].object.value : aux[i].object.prefix+":"+aux[i].object.suffix;
-    subject = (aux[i].subject.value != null)? aux[i].subject.value : aux[i].subject.prefix+":"+aux[i].subject.suffix;
+  	var subject, predicate, object, subjectType, predicateType, objectType = null;
+  	
+  	if(aux[i].predicate.value != null){
+  	  predicate = aux[i].predicate.value;
+  	  predicateType = "uri";
+    }else{
+      predicate = aux[i].predicate.prefix+":"+aux[i].predicate.suffix;
+      predicateType = "curie";
+    }
+    
+    if(aux[i].object.value != null){
+      object = aux[i].object.value;
+      objectType = aux[i].object.token;
+    }else{
+      object = aux[i].object.prefix+":"+aux[i].object.suffix;
+      objectType = "curie";
+    }
+    if(aux[i].subject.value != null){
+      subject = aux[i].subject.value;
+      subjectType = aux[i].subject.token;
+    }else{
+      subject =aux[i].subject.prefix+":"+aux[i].subject.suffix;
+      subjectType = "curie";
+    }
 
     //uris and curies
     if(aux[i].object.token == "uri"){
@@ -96,9 +118,10 @@ getPatterns: function () {
     predicate = impl.getCurie(predicate);
     object = impl.getCurie(object);
     links.push({
-     source: impl.createNode(subject),
-     target: impl.createNode(object),
+     source: impl.createNode(subject, subjectType),
+     target: impl.createNode(object, objectType),
      name: predicate,
+     type: predicateType,
      value: 10
    });
  }
