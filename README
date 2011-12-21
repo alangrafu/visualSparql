@@ -1,5 +1,9 @@
-# Brief introduction
+==Brief introduction==
 
 The goal of visualSparql is to provide a graphical interface for 
 (i) creating SPARQL queries visually and (ii) visualizing existing
 sparql queries in a graphical manner.
+
+==Demo==
+
+You can play with a demo at http://graves.cl/visualSparql/
