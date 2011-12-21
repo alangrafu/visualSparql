@@ -25,7 +25,7 @@ if(isset($_GET['query'])){
 <script type="text/javascript" src="js/d3/d3.geom.js"></script>
 <script type="text/javascript" src="js/namespace.js"></script>
 <script type="text/javascript" src="js/SparqlParser.js"></script>
-<script type="text/javascript" src="js/SparqlApi.js"></script>
+<script type="text/javascript" src="js/sparqlApi.js"></script>
 
 <style type="text/css">
 .link { stroke: #000; font-size: 11px; font-family: sans-serif; }
