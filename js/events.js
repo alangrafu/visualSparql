@@ -2,6 +2,30 @@
 var creatingLink = false;
 var sourceNode, targetNode = undefined;
 var sourceCircle, targetCircle = undefined;
+
+function changeSelects(d){
+  if(d.type != "var"){
+  	errorMsg("Only variables can be selected");
+  }else{  	  	
+  	var newSelects;  
+  	var query = d3.select("#query").text();
+  	var selects = query.match(/SELECT (.*)WHERE/);
+  	if(selects[1].indexOf(d.name+" ") < 0){
+  	  newSelects = "SELECT "+selects[1]+d.name+' WHERE';
+  	  query = query.replace(/SELECT(.*)WHERE/, newSelects);
+  	  d3.select("#query").text(query); 	
+  	  return true;	  
+  	}else if(selects[1].indexOf(d.name+" ") >= 0){
+  	  var aux = selects[1].replace(d.name+" ", "");
+  	  newSelects = "SELECT "+aux+"WHERE";
+  	  query = query.replace(/SELECT(.*)WHERE/, newSelects);
+  	  d3.select("#query").text(query);
+  	  return true;
+  	}
+  	return false;
+  }
+}
+
 function addEventToNodes(){
   d3.selectAll("circle.node").on("dblclick", function(d){    
   	  if(creatingLink == false){
@@ -21,27 +45,29 @@ function addEventToNodes(){
   	  }
   })
   d3.selectAll("circle.node").on("click", function(d){
-  	  if(d.type != "var"){
-  	  	d3.select("#msg").style("color", "red").text("Only variables can be selected");
-  	  }else{  	  	
-  	  	var newSelects;  
-  	  	var query = d3.select("#query").text();
-  	  	var selects = query.match(/SELECT (.*)WHERE/);
+  	  changed = changeSelects(d);
+  	  if(changed){
   	  	if(d3.select(this).style("fill") == normalColor){
-  	  	  newSelects = "SELECT "+selects[1]+d.name+' WHERE';
-  	  	  d3.select(this).style("fill", varColor);
-  	  	}else if(d3.select(this).style("fill") == varColor){
-  	  	  var aux = selects[1].replace(d.name+" ", "");
-  	  	  newSelects = "SELECT "+aux+"WHERE";
+  	  	  d3.select(this).style("fill", varColor); 
+  	  	}else{
   	  	  d3.select(this).style("fill", normalColor);
   	  	}
-  	  	query = query.replace(/SELECT(.*)WHERE/, newSelects);
-  	  	d3.select("#query").text(query);
+  	  }
+  });
+  d3.selectAll("text.link").on("click", function(d){
+  changed = changeSelects(d);
+  	  if(changed){
+  	  	if(d3.select(this).style("stroke") == normalLink){
+  	  	  d3.select(this).style("fill", "black"); 
+  	  	  d3.select(this).style("stroke", varLink); 
+  	  	}else{
+  	  	  d3.select(this).style("fill", "white");
+  	  	  d3.select(this).style("stroke", normalLink);
+  	  	}
   	  }
   });
   
   $("#msg").change(function(d){
-  	  alert("asd");
   	  setTimeout(function() {  
   	  	  $('#msg').fadeOut('fast');  
   	  }, 1000);

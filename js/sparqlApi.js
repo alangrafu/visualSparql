@@ -12,7 +12,7 @@ SparqlApi = function () {
      try{
       parsed = sparqlParser.parse(query);
     }catch(err){
-      d3.select("#msg").style("color", "red").text("Your query has syntactic error(s)");
+      errorMsg("Your query has syntactic error(s)");
       nodes = [];
       links = [];
       console.log(err);
@@ -32,6 +32,7 @@ SparqlApi = function () {
 },
 createLink: function(s, t, n){
   var c = 0;      
+
   links.push({source: impl.createNode(s), target: impl.createNode(t), name: n, type: "curie", value: 10});
   return links.length;
 },
@@ -70,7 +71,7 @@ getPatterns: function () {
   	
   	if(aux[i].predicate.value != null){
   	  predicate = aux[i].predicate.value;
-  	  predicateType = "uri";
+  	  predicateType = aux[i].predicate.token;
     }else{
       predicate = aux[i].predicate.prefix+":"+aux[i].predicate.suffix;
       predicateType = "curie";
