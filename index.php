@@ -37,15 +37,19 @@ if(isset($_GET['query'])){
 <title>Visual SPARQL</title>
 </head>
 <body>
-<h1>Visual SPARQL</h1><div style="float:right" id="msg"></div>
+<h1>Visual SPARQL</h1>
+<div>
 <div style="float: left;border-width: 1px; border-style: solid;" class='gallery' id='chart'></div>
+<div style="float:left;color:red" id="msg"></div>
+
 <textarea  cols="60" rows="20" style="float;left" id="query">
 <?= $query ?>
 </textarea>
+
 <br/>
 <button id="redraw">Redraw</button>
 <button id="newnode">New node</button>
-
+</div>
 <div id="dialog-overlay"></div>
 <div id="dialog-box">
     <div class="dialog-content">
@@ -64,7 +68,7 @@ if(isset($_GET['query'])){
 
 <script type="text/javascript" src='js/main.js'></script>
 <script type="text/javascript" src="js/dialog.js"></script>
-<script type="text/javascript" src="js/dragdrop.js"></script>
+<script type="text/javascript" src="js/events.js"></script>
 </body>
 </html>
 

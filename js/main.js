@@ -4,6 +4,8 @@ h = 400;
 var normalColor = "#cfefcf";
 var varColor    = "#cfcfef";
 var selectColor = "#ff0000";
+var normalLink  = "#000000";
+var varLink  = varColor;
 var sp = new SparqlApi();
 
 var ns = new NS();
@@ -47,6 +49,7 @@ function init(json){
   .attr("class", "link")
   .attr("x", function(d) { return d.source.x; })
   .attr("y", function(d) { return d.source.y; })
+  .style("stroke", function(d){if(projections.indexOf(d.name)<0){return normalLink}else{return varLink}})
   .text(function(d){return d.name;});
   
   
@@ -128,6 +131,7 @@ sp = new SparqlApi();
 sp.init(q);
 var projections = sp.getProjection();
 sp.getPatterns();
+console.log(sp.getLinks());
 var json = {
   nodes: sp.getNodes(),
   links: sp.getLinks()
@@ -176,4 +180,10 @@ $('#query').keydown(function(){
 function doneTyping () {
   q = document.getElementById("query").value;
   sp.init(q);
+}
+
+function errorMsg(t){
+  $("#msg").slideUp(0);
+  d3.select("#msg").style("color", "red").text(t);
+  $("#msg").slideDown(300).delay(2000).slideUp(300);
 }
