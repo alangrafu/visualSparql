@@ -9,7 +9,7 @@ function changeSelects(d){
   }else{  	  	
   	var newSelects;  
   	var query = d3.select("#query").text();
-  	var selects = query.match(/SELECT (.*)WHERE/);
+  	var selects = query.match(/SELECT (.*)\S+WHERE/);
   	if(selects[1].indexOf(d.name+" ") < 0){
   	  newSelects = "SELECT "+selects[1]+d.name+' WHERE';
   	  query = query.replace(/SELECT(.*)WHERE/, newSelects);

@@ -19,6 +19,7 @@ var files = d3.select("body").append("div").style("width", 100).style("height", 
 
 var nodes = [];
 var links = [];
+var linkArrowhead = [];
 var force;
 force = self.force = d3.layout.force();
 
@@ -52,6 +53,20 @@ function init(json){
   .style("stroke", function(d){if(projections.indexOf(d.name)<0){return normalLink}else{return varLink}})
   .text(function(d){return d.name;});
   
+  
+  linkArrowhead = link.append("svg:polygon")
+  .attr("class", "arrowhead")
+  .attr("transform",function(d) {
+  	  angle = Math.atan2(d.target.y-d.source.y, d.target.x-d.source.x);
+  	  return "rotate("+angle+", "+d.target.x+", "+d.target.y+")";
+  })
+  .attr("points", function(d) {
+  	  //angle = (d.y2-d.y1)/(d.x2-d.x1);
+  	  return [[d.target.x,d.target.y].join(","),
+  	  	[d.target.x-3,d.target.y+26].join(","),
+  	  [d.target.x+3,d.target.y+26].join(",")].join(" ");
+  });
+
   
   var node = vis.selectAll("g.node")
   .data(nodes)
@@ -95,6 +110,16 @@ function init(json){
   	  .attr("y", function(d) { return (d.source.y+d.target.y)/2; })
   	  
   	  node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; 
+  	  });
+  	  
+  	  linkArrowhead.attr("points", function(d) {
+  	  	  return [[d.target.x,d.target.y+10].join(","),
+  	  	  	[d.target.x-3,d.target.y+16].join(","),
+  	  	  [d.target.x+3,d.target.y+16].join(",")].join(" ");
+  	  })
+  	  .attr("transform",function(d) {
+  	  	  angle = Math.atan2(d.target.y-d.source.y, d.target.x-d.source.x)*180/Math.PI + 90;
+  	  	  return "rotate("+angle+", "+d.target.x+", "+d.target.y+")";
   	  });
   	  
   	  addEventToNodes();
@@ -187,3 +212,4 @@ function errorMsg(t){
   d3.select("#msg").style("color", "red").text(t);
   $("#msg").slideDown(300).delay(2000).slideUp(300);
 }
+
