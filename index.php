@@ -1,13 +1,8 @@
 <?
 $query = "PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-SELECT ?s ?p WHERE
-{
-?s ?p ?o;
-   a foaf:Person ;
-   rdfs:label 'asdasdasd';
-   foaf:knows <http://alvaro.graves.cl> 
+SELECT ?person ?email
+WHERE {
+  ?person a foaf:Person 
 }";
 if(isset($_GET['query'])){
 	$query = $_GET['query'];
@@ -30,6 +25,11 @@ if(isset($_GET['query'])){
 <style type="text/css">
 .link { stroke: #000; font-size: 11px; font-family: sans-serif; }
 .nodetext { pointer-events: none; font-size: 11px; font-family: sans-serif; }
+arrowhead {
+  stroke: #999;
+  fill: #999;
+  stroke-width: 1;
+}
 .main{border: 1px; border-color: black}
 </style>
 <link href='css/style.css' rel='stylesheet' type='text/css' />
