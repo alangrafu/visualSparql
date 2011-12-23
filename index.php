@@ -1,8 +1,8 @@
 <?
 $query = "PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-SELECT ?person ?email
-WHERE {
-  ?person a foaf:Person 
+SELECT ?person ?email WHERE {
+  ?person a foaf:Person;
+          foaf:mbox ?email .
 }";
 if(isset($_GET['query'])){
 	$query = $_GET['query'];
