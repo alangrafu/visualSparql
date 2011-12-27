@@ -58,7 +58,7 @@ arrowhead {
     </div>
 </div>
 <div id="panel" style="display:none">
-<input type="text" id="nodename" value="rdfs:Class"/><br/>
+<input type="text" id="nodename" value="?x"/><br/>
   <button id="submitNode">Add</button>
 </div>
 <div id="predDialog" style="display:none">
@@ -69,14 +69,13 @@ arrowhead {
 </div>
 <div>
 <table style="border: 1px; border-style:solid">
-<tr><th>Action</th><th>Event</th></tr>
+  <tr><th>Action</th><th>Event</th></tr>
   <tr><td><strong>Double-click on screen</strong></td><td>Create a new node</td></tr>
   <tr><td><strong>Double-click on node</strong></td><td>Create a new link between nodes</td></tr>
   <tr><td><strong>Single-click on node</strong></td><td>Select node</td></tr>
 </table>
 </div>
 <script type="text/javascript" src='js/main.js'></script>
-<script type="text/javascript" src="js/dialog.js"></script>
 <script type="text/javascript" src="js/events.js"></script>
 </body>
 </html>
