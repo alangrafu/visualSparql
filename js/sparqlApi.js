@@ -15,8 +15,7 @@ SparqlApi = function () {
       errorMsg("Your query has syntactic error(s)");
       nodes = [];
       links = [];
-      console.log(err);
-      return;
+      return false;
     }
   },
   createNode: function(n, t){
