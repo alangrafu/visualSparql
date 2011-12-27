@@ -38,6 +38,7 @@ arrowhead {
 </head>
 <body>
 <h1>Visual SPARQL</h1>
+<div style="height:420px">
 <div>
 <div style="float: left;border-width: 1px; border-style: solid;" class='gallery' id='chart'></div>
 <div style="float:left;color:red" id="msg"></div>
@@ -48,7 +49,6 @@ arrowhead {
 
 <br/>
 <button id="redraw">Redraw</button>
-<button id="newnode">New node</button>
 </div>
 <div id="dialog-overlay"></div>
 <div id="dialog-box">
@@ -58,14 +58,23 @@ arrowhead {
     </div>
 </div>
 <div id="panel" style="display:none">
-  <input type="text" id="nodename" value="ASDASD"/><br/>
+<input type="text" id="nodename" value="rdfs:Class"/><br/>
   <button id="submitNode">Add</button>
 </div>
 <div id="predDialog" style="display:none">
   <input type="text" id="predname" value="foaf:based_near"/><br/>
   <button id="submitPred">Add</button>
 </div>
-
+</div>
+</div>
+<div>
+<table style="border: 1px; border-style:solid">
+<tr><th>Action</th><th>Event</th></tr>
+  <tr><td><strong>Double-click on screen</strong></td><td>Create a new node</td></tr>
+  <tr><td><strong>Double-click on node</strong></td><td>Create a new link between nodes</td></tr>
+  <tr><td><strong>Single-click on node</strong></td><td>Select node</td></tr>
+</table>
+</div>
 <script type="text/javascript" src='js/main.js'></script>
 <script type="text/javascript" src="js/dialog.js"></script>
 <script type="text/javascript" src="js/events.js"></script>

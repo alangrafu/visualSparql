@@ -17,6 +17,8 @@ $(document).ready(function(){
 			};
 			init(json);
 			$("#nodename").val("");
+			$("#panel").css("display", "none");
+
 		}
 	});
 

@@ -26,54 +26,74 @@ function changeSelects(d){
   }
 }
 
-function addEventToNodes(){
-  d3.selectAll("circle.node").on("dblclick", function(d){    
-  	  if(creatingLink == false){
-  	  	console.log(d3.select(this));
-  	  	sourceCircle = d3.select(this);
-  	  	sourceCircle.style("fill", selectColor);
-  	  	creatingLink = true;
-  	  	sourceNode= sourceCircle.attr("id");
-  	  }else{
-  	  	$("#predDialog").css("display", "inline");
-  	  	if(targetCircle != undefined){
-  	  	  targetCircle.style("fill", normalColor);
-  	  	}
-  	  	targetCircle = d3.select(this);
-  	  	targetCircle.style("fill", selectColor);
-  	  	targetNode = targetCircle.attr("id");
-  	  }
-  })
-  d3.selectAll("circle.node").on("click", function(d){
-  	  changed = changeSelects(d);
-  	  if(changed){
-  	  	if(d3.select(this).style("fill") == normalColor){
-  	  	  d3.select(this).style("fill", varColor); 
-  	  	}else{
-  	  	  d3.select(this).style("fill", normalColor);
-  	  	}
-  	  }
-  });
-  d3.selectAll("text.link").on("click", function(d){
-  changed = changeSelects(d);
-  	  if(changed){
-  	  	if(d3.select(this).style("stroke") == normalLink){
-  	  	  d3.select(this).style("fill", "black"); 
-  	  	  d3.select(this).style("stroke", varLink); 
-  	  	}else{
-  	  	  d3.select(this).style("fill", "white");
-  	  	  d3.select(this).style("stroke", normalLink);
-  	  	}
-  	  }
-  });
-  
-  $("#msg").change(function(d){
-  	  setTimeout(function() {  
-  	  	  $('#msg').fadeOut('fast');  
-  	  }, 1000);
-  });
-}
+d3.selectAll("circle.node").on("dblclick", function(d){ 
+	console.log("double click on circle");
+	$("#panel").css("display", "none");
+	if(creatingLink == false){
+	  sourceCircle = d3.select(this);
+	  sourceCircle.style("fill", selectColor);
+	  creatingLink = true;
+	  sourceNode= sourceCircle.attr("id");
+	}else{
+	  $("#predDialog").css("display", "inline");
+	  if(targetCircle != undefined){
+	  	targetCircle.style("fill", normalColor);
+	  }
+	  targetCircle = d3.select(this);
+	  targetCircle.style("fill", selectColor);
+	  targetNode = targetCircle.attr("id");
+	}
+	event.stopPropagation();
+	return false;
+})
 
+
+d3.selectAll("circle.node").on("click", function(d){
+	changed = changeSelects(d);
+	if(changed){
+	  if(d3.select(this).style("fill") == normalColor){
+	  	d3.select(this).style("fill", varColor); 
+	  }else{
+	  	d3.select(this).style("fill", normalColor);
+	  }
+	}
+});
+d3.selectAll("text.link").on("click", function(d){
+	changed = changeSelects(d);
+	if(changed){
+	  if(d3.select(this).style("stroke") == normalLink){
+	  	d3.select(this).style("fill", "black"); 
+	  	d3.select(this).style("stroke", varLink); 
+	  }else{
+	  	d3.select(this).style("fill", "white");
+	  	d3.select(this).style("stroke", normalLink);
+	  }
+	}
+});
+
+$("#msg").change(function(d){
+	setTimeout(function() {  
+		$('#msg').fadeOut('fast');  
+	}, 1000);
+});
+
+vis.on("dblclick", function(d){
+	console.log("double click svg");
+	$("#panel").css("display", "inline");
+})
+
+
+//Check that sparql query syntax is OK after typing
+var typingTimer;                //timer identifier
+var doneTypingInterval = 1200;  //time in ms, 5 second for example
+
+$('#query').keyup(function(){
+    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+});
+
+$('#query').keydown(function(){
+    clearTimeout(typingTimer);
+});
 
 $("#submitPred").on("click", function(){
     creatingLink = false;
@@ -82,8 +102,19 @@ $("#submitPred").on("click", function(){
     targetCircle, sourceCircle = undefined;
     redrawGraph(); 
     rewriteQuery();
+    return false;
 });
 
+
+function doneTyping () {
+  q = document.getElementById("query").value;
+  
+  if(sp.init(q)){
+	sp.getPatterns();
+	projections = sp.getProjection();
+	redrawGraph();
+  }
+}
 
 function addPrefix(curie, prefixes){ 
   aux = curie.split(":");

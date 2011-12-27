@@ -121,9 +121,7 @@ function init(json){
   	  	  angle = Math.atan2(d.target.y-d.source.y, d.target.x-d.source.x)*180/Math.PI + 90;
   	  	  return "rotate("+angle+", "+d.target.x+", "+d.target.y+")";
   	  });
-  	  
-  	  addEventToNodes();
-  	  
+  	    	  
   });
   
 }
@@ -188,24 +186,6 @@ d3.select("#redraw").on("click", function(){
 });
 
 
-//Check that sparql query syntax is OK after typing
-
-var typingTimer;                //timer identifier
-var doneTypingInterval = 800;  //time in ms, 5 second for example
-
-
-$('#query').keyup(function(){
-    typingTimer = setTimeout(doneTyping, doneTypingInterval);
-});
-
-$('#query').keydown(function(){
-    clearTimeout(typingTimer);
-});
-
-function doneTyping () {
-  q = document.getElementById("query").value;
-  sp.init(q);
-}
 
 function errorMsg(t){
   $("#msg").slideUp(0);
