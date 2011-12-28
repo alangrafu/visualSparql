@@ -3,20 +3,20 @@ var creatingLink = false;
 var sourceNode, targetNode = undefined;
 var sourceCircle, targetCircle = undefined;
 
-function changeSelects(d){
-  if(d.type != "var"){
+function changeSelects(f){
+  if(f.type != "var"){
   	errorMsg("Only variables can be selected");
   }else{  	  	
   	var newSelects;  
   	var query = d3.select("#query").text();
   	var selects = query.match(/SELECT (.*)WHERE/);
-  	if(selects[1].indexOf(d.name+" ") < 0){
-  	  newSelects = "SELECT "+selects[1]+d.name+' WHERE';
+  	if(selects[1].indexOf(f.name+" ") < 0){
+  	  newSelects = "SELECT "+selects[1]+f.name+' WHERE';
   	  query = query.replace(/SELECT(.*)WHERE/, newSelects);
   	  d3.select("#query").text(query); 	
   	  return true;	  
-  	}else if(selects[1].indexOf(d.name+" ") >= 0){
-  	  var aux = selects[1].replace(d.name+" ", "");
+  	}else if(selects[1].indexOf(f.name+" ") >= 0){
+  	  var aux = selects[1].replace(f.name+" ", "");
   	  newSelects = "SELECT "+aux+"WHERE";
   	  query = query.replace(/SELECT(.*)WHERE/, newSelects);
   	  d3.select("#query").text(query);
@@ -26,49 +26,56 @@ function changeSelects(d){
   }
 }
 
-$("circle.node").live("dblclick", function(d){ 
-	console.log("double click on circle");
-	$("#panel").css("display", "none");
-	if(creatingLink == false){
-	  sourceCircle = d3.select(this);
-	  sourceCircle.style("fill", selectColor);
-	  creatingLink = true;
-	  sourceNode= sourceCircle.attr("id");
-	}else{
-	  $("#predDialog").css("display", "inline");
-	  if(targetCircle != undefined){
-	  	targetCircle.style("fill", normalColor);
-	  }
-	  targetCircle = d3.select(this);
-	  targetCircle.style("fill", selectColor);
-	  targetNode = targetCircle.attr("id");
-	}
-	return false;
-})
-
-
-d3.selectAll("circle.node").on("click", function(d){
-	changed = changeSelects(d);
-	if(changed){
-	  if(d3.select(this).style("fill") == normalColor){
-	  	d3.select(this).style("fill", varColor); 
-	  }else{
-	  	d3.select(this).style("fill", normalColor);
-	  }
-	}
-});
-d3.selectAll("text.link").on("click", function(d){
-	changed = changeSelects(d);
-	if(changed){
-	  if(d3.select(this).style("stroke") == normalLink){
-	  	d3.select(this).style("fill", "black"); 
-	  	d3.select(this).style("stroke", varLink); 
-	  }else{
-	  	d3.select(this).style("fill", "white");
-	  	d3.select(this).style("stroke", normalLink);
-	  }
-	}
-});
+function addLiveEvents(){
+  
+  $("circle.node").live("dblclick", function(d){ 
+  	  console.log("double click on circle");
+  	  $("#panel").css("display", "none");
+  	  if(creatingLink == false){
+  	  	sourceCircle = d3.select(this);
+  	  	sourceCircle.style("fill", selectColor);
+  	  	creatingLink = true;
+  	  	sourceNode= sourceCircle.attr("id");
+  	  }else{
+  	  	$("#predDialog").css("display", "inline");
+  	  	if(targetCircle != undefined){
+  	  	  targetCircle.style("fill", normalColor);
+  	  	}
+  	  	targetCircle = d3.select(this);
+  	  	targetCircle.style("fill", selectColor);
+  	  	targetNode = targetCircle.attr("id");
+  	  }
+  	  addLiveEvents();
+  	  return false;
+  })
+  
+  
+  d3.selectAll("circle.node").on("click", function(d){
+  	  changed = changeSelects(d);
+  	  if(changed){
+  	  	if(d3.select(this).style("fill") == normalColor){
+  	  	  d3.select(this).style("fill", varColor); 
+  	  	}else{
+  	  	  d3.select(this).style("fill", normalColor);
+  	  	}
+  	  }
+  	  addLiveEvents();
+  });
+  
+  d3.selectAll("text.link").on("click", function(d){
+  	  changed = changeSelects(d);
+  	  if(changed){
+  	  	if(d3.select(this).style("stroke") == normalLink){
+  	  	  d3.select(this).style("fill", "black"); 
+  	  	  d3.select(this).style("stroke", varLink); 
+  	  	}else{
+  	  	  d3.select(this).style("fill", "white");
+  	  	  d3.select(this).style("stroke", normalLink);
+  	  	}
+  	  }
+  	  addLiveEvents();
+  });
+}
 
 $("#msg").change(function(d){
 	setTimeout(function() {  
@@ -93,7 +100,7 @@ vis.on("dblclick", function(d){
 	  	Math.pow((circleY - mouseY), 2)
 	  	);
 	  if(distance < 11){
-	  console.log(distance);
+	  	console.log(distance);
 	  	inCircle = true;
 	  }
 	}
@@ -109,21 +116,33 @@ var typingTimer;                //timer identifier
 var doneTypingInterval = 1200;  //time in ms, 5 second for example
 
 $('#query').keyup(function(){
-    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+	typingTimer = setTimeout(doneTyping, doneTypingInterval);
 });
 
 $('#query').keydown(function(){
-    clearTimeout(typingTimer);
+	clearTimeout(typingTimer);
+});
+
+$('#nodename').keyup(function(){
+	$('input[name=nodeType]').attr('checked', false);
+	if($('#nodename').val().match(/^\?[A-Za-z][A-Za-z0-9_]*$/)){
+	  $('input[name=nodeType]').filter("[value=var]").attr('checked', 'checked');	  
+	}
+	else if($('#nodename').val().indexOf(':') > -1){
+	  $('input[name=nodeType]').filter("[value=uri]").attr('checked', 'checked');	  
+	}else{
+	  $('input[name=nodeType]').filter("[value=literal]").attr('checked', 'checked');	  
+	}
 });
 
 $("#submitPred").on("click", function(){
-    creatingLink = false;
-    $("#predDialog").css("display", "none");
-    var addedLink = sp.createLink(sourceNode, targetNode, $("#predname").val());    
-    targetCircle, sourceCircle = undefined;
-    redrawGraph(); 
-    rewriteQuery();
-    return false;
+	creatingLink = false;
+	$("#predDialog").css("display", "none");
+	var addedLink = sp.createLink(sourceNode, targetNode, $("#predname").val());    
+	targetCircle, sourceCircle = undefined;
+	redrawGraph(); 
+	rewriteQuery();
+	return false;
 });
 
 $("#newnode").on("click", function(){
@@ -132,8 +151,10 @@ $("#newnode").on("click", function(){
 
 $("#submitNode").on("click", function(){
 	newNode = $("#nodename").val();
+	newNodeType = $("[name=nodeType]:checked").val();
 	var nodeListSize = nodes.length;
-	var addedNode = sp.createNode(newNode);
+	console.log(newNode, newNodeType);
+	var addedNode = sp.createNode(newNode, newNodeType);
 	if(nodeListSize > addedNode){
 	  alert("Node \""+newNode+"\" already exists!");
 	}else{
@@ -142,7 +163,6 @@ $("#submitNode").on("click", function(){
 	  	links: sp.getLinks()
 	  };
 	  init(json);
-	  $("#nodename").val("");
 	  $("#panel").css("display", "none");
 	  
 	}
@@ -194,3 +214,5 @@ function rewriteQuery(){
   q += "}";
   document.getElementById("query").value = q;
 }
+
+addLiveEvents();

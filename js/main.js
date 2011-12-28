@@ -44,7 +44,7 @@ function init(json){
   .attr("x1", function(d){if(!isNaN(d.x1)){return d.x1}else{return 20}})
   .attr("y1", function(d){if(!isNaN(d.y1)){return d.y1}else{return 20}})
   .attr("x2", function(d){if(!isNaN(d.x2)){return d.x2}else{return 20}})
-  .attr("y2", function(d){if(!isNaN(d.y2)){return d.y2}else{return 20}})
+  .attr("y2", function(d){if(!isNaN(d.y2)){return d.y2}else{return 20}});
   
   link.append("svg:text")
   .attr("class", "link")
@@ -162,7 +162,6 @@ var json = {
 init(json);
 force.stop();
 restart();
-
 
 function redrawGraph(){
   nodes = [];

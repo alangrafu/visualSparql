@@ -59,6 +59,9 @@ arrowhead {
 </div>
 <div id="panel" style="display:none">
 <input type="text" id="nodename" value="?x"/><br/>
+<input type="radio" name="nodeType" checked="yes"  value="var"/>var 
+<input type="radio" name="nodeType" value="uri"/>uri 
+<input type="radio" name="nodeType" value="literal"/>literal<br/>
   <button id="submitNode">Add</button>
 </div>
 <div id="predDialog" style="display:none">
